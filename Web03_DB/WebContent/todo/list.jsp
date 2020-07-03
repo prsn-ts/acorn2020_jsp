@@ -17,24 +17,31 @@
 <link rel="stylesheet" href="../css/bootstrap.css" />
 </head>
 <body>
-	<h1>할일 목록 보기</h1>
-	<form action="insert.jsp" method="post">
-		<input type="text" name="content"/>
-		<button type="submit">추가</button>
-	</form>
 	<div class="container">
-		<div class="row">
-			<div class="col">순서</div>
-			<div class="col">할일</div>
-			<div class="col">날짜</div>
-			<div class="col">삭제</div>
+		<div class="navbar navbar-expand-sm navbar-dark bg-primary">
+			<a class="navbar-brand" href="../index.jsp">Acorn</a>
+			<ul class="navbar-nav">
+				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/list.jsp">Member</a></li>
+				<li class="nav-item"><a class="nav-link active" href="todo/list.jsp">Todo</a></li>
+			</ul>
+		</div>
+		<h1>할일 목록 보기</h1>
+		<form action="insert.jsp" method="post">
+			<input type="text" name="content"/>
+			<button type="submit">추가</button>
+		</form>
+		<div class="d-flex table-dark">
+			<div class="col-2">순서</div>
+			<div class="col-5">할일</div>
+			<div class="col-3">날짜</div>
+			<div class="col-2">삭제</div>
 		</div>
 	<%for(MemoDto tmp:list){ %>
-		<div class="row">
-			<div class="col"><%=tmp.getNum() %></div>
-			<div class="col"><%=tmp.getContent() %></div>
-			<div class="col"><%=tmp.getRegdate() %></div>
-			<div class="col"><a href="delete.jsp?num=<%=tmp.getNum() %>">삭제</a></div>
+		<div class="d-flex">
+			<div class="col-2"><%=tmp.getNum() %></div>
+			<div class="col-5"><%=tmp.getContent() %></div>
+			<div class="col-3"><%=tmp.getRegdate() %></div>
+			<div class="col-2"><a href="delete.jsp?num=<%=tmp.getNum() %>">삭제</a></div>
 		</div>
 	<%} %>
 	</div>
