@@ -23,6 +23,7 @@
 		<ul class="navbar-nav">
 			<li class="nav-item"><a class="nav-link active" href="${pageContext.request.contextPath}/member/list.jsp">Member</a></li>
 			<li class="nav-item"><a class="nav-link" href="../todo/list.jsp">Todo</a></li>
+			<li class="nav-item"><a class="nav-link" href="../order/list.jsp">Order</a></li>
 		</ul>
 	</div>
 	<h1>회원 목록입니다.</h1>

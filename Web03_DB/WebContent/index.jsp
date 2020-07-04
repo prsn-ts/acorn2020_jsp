@@ -10,10 +10,11 @@
 <body>
 <div class="container">
 	<div class="navbar navbar-expand-sm navbar-dark bg-primary">
-		<a class="navbar-brand" href="index.html">Acorn</a>
+		<a class="navbar-brand" href="index.jsp">Acorn</a>
 		<ul class="navbar-nav">
 			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/list.jsp">Member</a></li>
 			<li class="nav-item"><a class="nav-link" href="todo/list.jsp">Todo</a></li>
+			<li class="nav-item"><a class="nav-link" href="order/list.jsp">Order</a></li>
 		</ul>
 	</div>
 	<h1>인덱스 페이지 입니다.</h1>
