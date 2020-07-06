@@ -26,9 +26,9 @@
 <body>
 <div class="container">
 	<h1>알림</h1>
-	<p> 
+	<p class="alert alert-success"> 
 		<strong><%=dto.getName() %> 회원의 정보가 추가 되었습니다.</strong>
-		<a href="list.jsp">확인</a>
+		<a class="alert-link" href="list.jsp">확인</a>
 	</p>
 </div>
 </body>

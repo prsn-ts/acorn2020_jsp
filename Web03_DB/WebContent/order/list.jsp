@@ -17,15 +17,15 @@
 <link rel="stylesheet" href="../css/bootstrap.css" />
 </head>
 <body>
-	<div class="container">
-		<div class="navbar navbar-expand-sm navbar-dark bg-primary">
+<div class="navbar navbar-expand-sm navbar-dark bg-primary">
 			<a class="navbar-brand" href="../index.jsp">Acorn</a>
 			<ul class="navbar-nav">
 				<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/member/list.jsp">Member</a></li>
 				<li class="nav-item"><a class="nav-link" href="../todo/list.jsp">Todo</a></li>
 				<li class="nav-item"><a class="nav-link active" href="list.jsp">Order</a></li>
 			</ul>
-		</div>
+</div>
+	<div class="container">
 		<h1>주문 내역 보기</h1>
 		<form action="insert.jsp" method="post">
 			<label for="price">가격</label>
