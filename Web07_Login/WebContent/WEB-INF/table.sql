@@ -1,3 +1,15 @@
+-- upload 된 파일의 정보를 저장할 테이블
+CREATE TABLE board_file(
+	num NUMBER PRIMARY KEY,
+	writer VARCHAR2(100) NOT NULL,
+	title VARCHAR2(100) NOT NULL,
+	orgFileName VARCHAR2(100) NOT NULL, -- 원본 파일명
+	saveFileName VARCHAR2(100) NOT NULL, -- 서버에 실제로 저장된 파일명
+	fileSize NUMBER NOT NULL,
+	regdate DATE
+);
+-- 파일명을 다르게 저장 하는 이유는 작성자가 올렸던 파일들의 이름이 겹칠 수 있기 때문에 서버에 저장할 칼럼따로 실제 작성된 파일명 따로 저장해 보관해놓는다.
+
 -- 사용자(회원) 정보를 저장할 테이블
 CREATE TABLE users(
 	id VARCHAR2(100) PRIMARY KEY,
