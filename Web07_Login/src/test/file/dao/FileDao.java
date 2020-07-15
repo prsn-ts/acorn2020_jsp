@@ -30,7 +30,7 @@ public class FileDao {
 			//Connection 객체의 참조값 얻어오기 
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 준비하기
-			String sql = "SELECT num,writer,title,orgFileName,savaFileName,fileSize,regdate"
+			String sql = "SELECT num,writer,title,orgFileName,saveFileName,fileSize,regdate"
 					+ " FROM board_file"
 					+ " ORDER BY num DESC";
 			pstmt = conn.prepareStatement(sql);
@@ -45,7 +45,7 @@ public class FileDao {
 				dto.setWriter(rs.getString("writer"));
 				dto.setTitle(rs.getString("title"));
 				dto.setOrgFileName(rs.getString("orgFileName"));
-				dto.setSaveFileName(rs.getString("savaFileName"));
+				dto.setSaveFileName(rs.getString("saveFileName"));
 				dto.setFileSize(rs.getLong("fileSize"));
 				dto.setRegdate(rs.getString("regdate"));
 				//ArrayList 객체에 누적 시킨다.
@@ -76,7 +76,7 @@ public class FileDao {
 			conn = new DbcpBean().getConn();
 			//실행할 sql 문 준비하기
 			String sql = "INSERT INTO board_file"
-					+ " (num,writer,title,orgFileName,savaFileName,fileSize,regdate)"
+					+ " (num,writer,title,orgFileName,saveFileName,fileSize,regdate)"
 					+ " VALUES(board_file_seq.NEXTVAL, ?, ?, ?, ?, ?, SYSDATE)";
 			pstmt = conn.prepareStatement(sql);
 			//? 에 바인딩 할 값이 있으면 바인딩한다.
