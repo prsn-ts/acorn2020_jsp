@@ -78,7 +78,7 @@
                     //원본 파일명과 저장된 파일명을 FileDto 객체에 담는다.
                       dto.setOrgFileName(orgFileName);
                       dto.setSaveFileName(saveFileName);
-                      //파일 사이즈도 담는다
+                      //파일 사이즈도 담는다(파일의 사이즈를 알아야 저장할 수 있다.)
                       dto.setFileSize(item.getSize());
                     
                 }else{//폼 필드라면 

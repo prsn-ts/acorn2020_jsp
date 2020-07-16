@@ -15,6 +15,7 @@
 		2. 폼에 enctype="multipart/form-data" 속성 추가
 		3. <input type="file" /> 을 이용한다. 
 	--%>
+	<%-- 폼 제출 시 파일 이름(제목), 파일 데이터 등이 전송됨--%>
 	<form action="upload.jsp" method="post" enctype="multipart/form-data">
 		<label for="title">제목(설명)</label>
 		<input type="text" name="title" id="title" /><br />
