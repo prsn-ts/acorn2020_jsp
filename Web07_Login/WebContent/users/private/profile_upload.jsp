@@ -44,8 +44,6 @@
     //전송된 파라미터의 한글 인코딩 설정 
     upload.setHeaderEncoding("utf-8");
     
-    //폼 전송된 title
-    String title="";
     //WebContent 안에서 이미지 파일이 저장된 경로
     String imageSrc="";
     
@@ -77,11 +75,6 @@
                     
                 }else{//폼 필드라면 
                 	
-					// input name="title" 에 입력한 문자열 읽어오는 부분 2
-					if(item.getFieldName().equals("title")){
-					   //제목 읽어오기
-					   title=item.getString("utf-8");
-					}
                 }//if
             }//for
             
@@ -93,4 +86,4 @@
     }
    
 %>
-{"imagePath":"<%=imageSrc %>"}
+{"imageSrc":"<%=imageSrc %>"}
