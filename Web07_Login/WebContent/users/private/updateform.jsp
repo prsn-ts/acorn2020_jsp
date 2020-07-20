@@ -32,9 +32,10 @@
 <div class="container">
 	<h1>회원정보 수정 폼 입니다.</h1>
 	<%if(dto.getProfile()==null){ %>
-		<img id="profileImage" src="${pageContext.request.contextPath}/images/yellowbird.png" alt="" />
+		<%-- img 태그에 focus를 주기위해 a태그로 감싸고 javascript를 아무것도 실행하지 않는 구문을 넣어서 페이지 이동없이 포커스만 잡힐 수 있게 처리(키보드로 사용하는 사람을 위한 배려) --%>
+		<a id="profileLink" href="javascript:"><img id="profileImage" src="${pageContext.request.contextPath}/images/yellowbird.png" alt="" /></a>
 	<%}else{ %>
-		<img id="profileImage" src="${pageContext.request.contextPath}<%=dto.getProfile() %>" alt="" />
+		<a id="profileLink" href="javascript:"><img id="profileImage" src="${pageContext.request.contextPath}<%=dto.getProfile() %>" alt="" /></a>
 	<%} %>
 	<form action="update.jsp" method="post">
 		<%-- 프로필 이미지를 DB에 저장하기 위해 hidden type으로 설정. --%>
@@ -60,8 +61,8 @@
 <script src="${pageContext.request.contextPath}/js/jquery-3.5.1.js"></script>
 <script src="${pageContext.request.contextPath}/js/jquery.form.min.js"></script>
 <script>
-	//프로필 이미지를 클릭했을 때 프로필 수정에 대해 실행할 함수 등록
-	$("#profileImage").on("click", function(){
+	//프로필 링크를 클릭했을 때 프로필 수정에 대해 실행할 함수 등록
+	$("#profileLink").on("click", function(){
 		//프로필 이미지를 눌렀을 때 input type="file" 을 강제 클릭하게 한다.
 		$("#image").click(); //파일 선택창이 뜰 수 있도록
 	});
