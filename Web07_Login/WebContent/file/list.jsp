@@ -1,3 +1,4 @@
+<%@page import="java.net.URLEncoder"%>
 <%@page import="test.file.dao.FileDao"%>
 <%@page import="test.file.dto.FileDto"%>
 <%@page import="java.util.List"%>
@@ -53,9 +54,59 @@
 	int startRowNum=1+(pageNum-1)*PAGE_ROW_COUNT;
 	//보여줄 페이지 데이터의 끝 ResultSet row 번호
 	int endRowNum=pageNum*PAGE_ROW_COUNT;
+	/*
+		검색 키워드에 관련된 처리
+	*/
+	String keyword = request.getParameter("keyword");
+	if(keyword == null){//전달된 키워드가 없다면
+		keyword=""; //빈 문자열을 넣어준다.
+	}
 	
-	//전체 row 의 갯수를 읽어온다.
-	int totalRow=FileDao.getInstance().getCount();
+	//keyword 변수의 내용을 파라미터로 전송할 때 인코딩된 키워드로 보내기 위함.
+	//인코딩안된 내용을 파라미터로 보내면 문제가 발생할 수도 있다.
+	//인코딩된 키워드를 미리 만들어 둔다.
+	String encodedK = URLEncoder.encode(keyword);
+	String condition = request.getParameter("condition");
+	
+	//keyword와 condition 변수에 null값이 들어오는지 확인용.
+	//request.getParameter("keyword"), request.getParameter("keyword")의 값이 없는 경우 null값이 들어간다.
+	System.out.println(keyword);
+	System.out.println(condition);
+	
+	//검색 키워드와 startRowNum, endRowNum 을 담을 FileDto 객체 생성
+	FileDto dto = new FileDto();
+	dto.setStartRowNum(startRowNum);
+	dto.setEndRowNum(endRowNum);
+	//select 된 결과를 담을 List
+	List<FileDto> list = null; //어차피 FileDao  안에서 선언이되서 리턴되기 때문에 처음엔 null값을 넣는다.
+	//전체 row 의 개수를 담을 변수
+	int totalRow = 0;
+	if(!keyword.equals("")){ //만일 키워드가 넘어온다면
+		if(condition.equals("title_filename")){
+			//검색 키워드를 FileDto 객체의 필드에 담는다.
+			dto.setTitle(keyword);
+			dto.setOrgFileName(keyword);
+			//검색 키워드에 맞는 파일 목록중에서 pageNum(보여줄 페이지)에 해당하는 목록 얻어온다.
+			list=FileDao.getInstance().getListTF(dto);
+			//검색 키워드에 맞는 전체 글의 개수를 얻어온다.
+			totalRow=FileDao.getInstance().getCountTF(dto);
+		}else if(condition.equals("title")){
+			dto.setTitle(keyword);
+			list=FileDao.getInstance().getListT(dto);
+			totalRow=FileDao.getInstance().getCountT(dto);
+		}else if(condition.equals("writer")){
+			dto.setWriter(keyword);
+			list=FileDao.getInstance().getListW(dto);
+			totalRow=FileDao.getInstance().getCountW(dto);
+		}
+	}else{ //검색 키워드로 list.jsp를 들어온 것이 아닌 다른 링크로 들어왔을 때 전체 목록을 얻어오기.
+		//condition, keyword의 파라미터값이 null이 찍히지 않도록 하기 위함.
+		condition = "";
+		keyword = "";
+		list=FileDao.getInstance().getList(dto);
+		totalRow=FileDao.getInstance().getCount();
+	}
+	
 	//하단에 표시할 전체 페이지의 갯수 구하기
 	int totalPageCount=
 			(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
@@ -68,13 +119,6 @@
 	if(totalPageCount < endPageNum){
 		endPageNum=totalPageCount; //보정해준다. 
 	}
-	//startRowNum 과 endRowNumdmf FileDto 객체에 담고
-	FileDto dto = new FileDto();
-	dto.setStartRowNum(startRowNum);
-	dto.setEndRowNum(endRowNum);
-	//FileDto 객체를 인자로 전달해서 파일 목록을 얻어온다.
-	List<FileDto> list = FileDao.getInstance().getList(dto);
-	
 %>
 <div class="container">
 	<a href="private/upload_form.jsp">파일 업로드</a>
@@ -125,20 +169,36 @@
 	<div class="page-display">
 		<ul>
 		<%if(startPageNum != 1){ //시작 페이지 숫자가 1이 아닐경우(시작 페이지 숫자가 1일 때는 이전 페이지로 이동할 필요가 없다)%>
-			<li><a href="list.jsp?pageNum=<%=startPageNum-1 %>">Prev</a></li>
+			<%-- 
+				&condition=<%=condition%>&keyword=<%=encodedK%> 부분이 들어가는 이유는
+				검색 키워드로 검색된 list.jsp 페이지에서 다음 컨텐츠를 보기위해 넘길 시에 검색한 내용과 관련있는
+				내용이 계속 나와야하는데 그럴러면 condition과 keyword의 내용을 pageNum에 해당하는 페이지에 넘겨야한다.
+			--%>
+			<li><a href="list.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition%>&keyword=<%=encodedK%>">Prev</a></li>
 		<%} %>
 			<%for(int i=startPageNum; i<=endPageNum; i++){ %>
 				<%if(i==pageNum){ //현재 페이지랑 페이지 넘버랑 같을 때 li요소 active 효과 추가하기%>
-					<li class="active"><a href="list.jsp?pageNum=<%=i %>"><%=i %></a></li>
+					<li class="active"><a href="list.jsp?pageNum=<%=i %>&condition=<%=condition%>&keyword=<%=encodedK%>"><%=i %></a></li>
 				<%}else{ %>
-					<li><a href="list.jsp?pageNum=<%=i %>"><%=i %></a></li>
+					<li><a href="list.jsp?pageNum=<%=i %>&condition=<%=condition%>&keyword=<%=encodedK%>"><%=i %></a></li>
 				<%} %>
 			<%} %>
 		<%if(endPageNum < totalPageCount){ //전체 페이지 숫자 보다 끝 페이지 숫자가 작은 경우(다음으로 넘어갈 페이지가 존재한다는 의미)%>
-			<li><a href="list.jsp?pageNum=<%=endPageNum+1%>">Next</a></li>
+			<li><a href="list.jsp?pageNum=<%=endPageNum+1%>&condition=<%=condition%>&keyword=<%=encodedK%>">Next</a></li>
 		<%} %>
 		</ul>
 	</div>
+	<hr style="clear:left;"/>
+	<form action="list.jsp" method="get">
+		<label for="condition">검색조건</label>
+		<select name="condition" id="condition">
+			<option value="title_filename" <%if(condition.equals("title_filename")){ %>selected<%} %>>제목+파일명</option>
+			<option value="title" <%if(condition.equals("title")){ %>selected<%} %>>제목</option>
+			<option value="writer" <%if(condition.equals("writer")){ %>selected<%} %>>작성자</option>
+		</select>
+		<input value="<%=keyword %>" type="text" name="keyword" placeholder="검색어..." />
+		<button type="submit">검색</button>
+	</form>
 </div>
 </body>
 </html>

@@ -58,6 +58,134 @@ public class FileDao {
 		}
 		return count;
 	}
+	
+	//제목+파일명 검색결과 row 의 개수를 리턴해주는 메소드(제목+파일명 row의 개수를 알아야 페이징 처리가 가능하다)
+	public int getCountTF(FileDto dto) { //
+		int count=0;
+		//필요한 객체의 참조값을 담을 지역변수 만들기 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//Connection 객체의 참조값 얻어오기 
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 준비하기
+			//ROWNUM 중에서 가장 큰 숫자를 얻어오면 전체 row 의 개수가 된다.
+			//혹시 row가 하나도 없으면 null 이 얻어와 지기 때문에 null인 경우 
+			//0으로 바꿔줘야한다 -> NVL이라는 DB에 내장된 함수를 써서 null일 때 숫자 0으로 변경.
+			String sql = "SELECT NVL(MAX(ROWNUM), 0) AS num"
+					+ " FROM board_file"
+					+ " WHERE title LIKE '%' || ? || '%' OR orgFileName LIKE '%' || ? || '%'";
+			pstmt = conn.prepareStatement(sql);
+			//sql 문에 ? 에 바인딩할 값이 있으면 바인딩하고 
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getOrgFileName());
+			//select 문 수행하고 결과 받아오기 
+			rs = pstmt.executeQuery();
+			//if문 검사 후 결과 값 추출하기 
+			if (rs.next()) {
+				count=rs.getInt("num");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
+	
+	//제목 검색결과 row 의 개수를 리턴해주는 메소드(제목 row의 개수를 알아야 페이징 처리가 가능하다)
+	public int getCountT(FileDto dto) { //
+		int count=0;
+		//필요한 객체의 참조값을 담을 지역변수 만들기 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//Connection 객체의 참조값 얻어오기 
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 준비하기
+			//ROWNUM 중에서 가장 큰 숫자를 얻어오면 전체 row 의 개수가 된다.
+			//혹시 row가 하나도 없으면 null 이 얻어와 지기 때문에 null인 경우 
+			//0으로 바꿔줘야한다 -> NVL이라는 DB에 내장된 함수를 써서 null일 때 숫자 0으로 변경.
+			String sql = "SELECT NVL(MAX(ROWNUM), 0) AS num"
+					+ " FROM board_file"
+					+ " WHERE title LIKE '%' || ? || '%'";
+			pstmt = conn.prepareStatement(sql);
+			//sql 문에 ? 에 바인딩할 값이 있으면 바인딩하고 
+			pstmt.setString(1, dto.getTitle());
+			//select 문 수행하고 결과 받아오기 
+			rs = pstmt.executeQuery();
+			//if문 검사 후 결과 값 추출하기 
+			if (rs.next()) {
+				count=rs.getInt("num");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
+	
+	//작성자 검색결과 row 의 개수를 리턴해주는 메소드(작성자 row의 개수를 알아야 페이징 처리가 가능하다)
+	public int getCountW(FileDto dto) { //
+		int count=0;
+		//필요한 객체의 참조값을 담을 지역변수 만들기 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//Connection 객체의 참조값 얻어오기 
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 준비하기
+			//ROWNUM 중에서 가장 큰 숫자를 얻어오면 전체 row 의 개수가 된다.
+			//혹시 row가 하나도 없으면 null 이 얻어와 지기 때문에 null인 경우 
+			//0으로 바꿔줘야한다 -> NVL이라는 DB에 내장된 함수를 써서 null일 때 숫자 0으로 변경.
+			String sql = "SELECT NVL(MAX(ROWNUM), 0) AS num"
+					+ " FROM board_file"
+					+ " WHERE writer LIKE '%' || ? || '%'";
+			pstmt = conn.prepareStatement(sql);
+			//sql 문에 ? 에 바인딩할 값이 있으면 바인딩하고 
+			pstmt.setString(1, dto.getWriter());
+			//select 문 수행하고 결과 받아오기 
+			rs = pstmt.executeQuery();
+			//if문 검사 후 결과 값 추출하기 
+			if (rs.next()) {
+				count=rs.getInt("num");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return count;
+	}
+	
 	//인자로 전달되는 파일 번호에 해당하는 파일 정보를 삭제하는 메소드(파일을 삭제하기 위한 메소드)
 	public boolean delete(int num) {
 		Connection conn = null;
@@ -161,6 +289,172 @@ public class FileDao {
 			//sql 문에 ? 에 바인딩할 값이 있으면 바인딩하고 
 			pstmt.setInt(1, dto.getStartRowNum());
 			pstmt.setInt(2, dto.getEndRowNum());
+			//select 문 수행하고 결과 받아오기 
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 결과 값 추출하기 
+			while (rs.next()) {
+				FileDto tmp = new FileDto();
+				tmp.setNum(rs.getInt("num"));
+				tmp.setWriter(rs.getString("writer"));
+				tmp.setTitle(rs.getString("title"));
+				tmp.setOrgFileName(rs.getString("orgFileName"));
+				tmp.setFileSize(rs.getLong("fileSize"));
+				tmp.setRegdate(rs.getString("regdate"));
+				//ArrayList 객체에 누적 시킨다.
+				list.add(tmp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return list;
+	}
+	
+	//글 제목 + 작성자 파일 목록을 리턴해주는 메소드
+	public List<FileDto> getListTF(FileDto dto){ //startRowNum,endRowNum,title(글 제목),orgFileName(파일명) 필드를 담아오기 위한 dto를 매개변수 설정.
+		//파일 목록을 담을 ArrayList 객체 생성
+		List<FileDto> list = new ArrayList<>();
+		//필요한 객체의 참조값을 담을 지역변수 만들기 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//Connection 객체의 참조값 얻어오기 
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 준비하기
+			String sql = "SELECT *"
+					+ " FROM"
+					+ " (SELECT result1.*, ROWNUM AS rnum"
+					+ "  FROM (SELECT num,writer,title,orgFileName,fileSize,regdate"
+					+ "  		FROM board_file"
+					+ " 		WHERE title LIKE '%' || ? || '%' OR writer LIKE '%' || ? || '%'"
+					+ " 		ORDER BY num DESC) result1)"
+					+ " WHERE rnum BETWEEN ? AND ?";
+			pstmt = conn.prepareStatement(sql);
+			//sql 문에 ? 에 바인딩할 값이 있으면 바인딩하고 
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setString(2, dto.getOrgFileName());
+			pstmt.setInt(3, dto.getStartRowNum());
+			pstmt.setInt(4, dto.getEndRowNum());
+			//select 문 수행하고 결과 받아오기 
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 결과 값 추출하기 
+			while (rs.next()) {
+				FileDto tmp = new FileDto();
+				tmp.setNum(rs.getInt("num"));
+				tmp.setWriter(rs.getString("writer"));
+				tmp.setTitle(rs.getString("title"));
+				tmp.setOrgFileName(rs.getString("orgFileName"));
+				tmp.setFileSize(rs.getLong("fileSize"));
+				tmp.setRegdate(rs.getString("regdate"));
+				//ArrayList 객체에 누적 시킨다.
+				list.add(tmp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return list;
+	}
+	
+	//글 제목 파일 목록을 리턴해주는 메소드
+	public List<FileDto> getListT(FileDto dto){ //startRowNum,endRowNum 필드를 담아오기 위한 dto를 매개변수 설정.
+		//파일 목록을 담을 ArrayList 객체 생성
+		List<FileDto> list = new ArrayList<>();
+		//필요한 객체의 참조값을 담을 지역변수 만들기 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//Connection 객체의 참조값 얻어오기 
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 준비하기
+			String sql = "SELECT *"
+					+ " FROM"
+					+ " (SELECT result1.*, ROWNUM AS rnum"
+					+ "  FROM (SELECT num,writer,title,orgFileName,fileSize,regdate"
+					+ "  		FROM board_file"
+					+ " 		WHERE title LIKE '%' || ? || '%'"
+					+ " 		ORDER BY num DESC) result1)"
+					+ " WHERE rnum BETWEEN ? AND ?";
+			pstmt = conn.prepareStatement(sql);
+			//sql 문에 ? 에 바인딩할 값이 있으면 바인딩하고
+			pstmt.setString(1, dto.getTitle());
+			pstmt.setInt(2, dto.getStartRowNum());
+			pstmt.setInt(3, dto.getEndRowNum());
+			//select 문 수행하고 결과 받아오기 
+			rs = pstmt.executeQuery();
+			//반복문 돌면서 결과 값 추출하기 
+			while (rs.next()) {
+				FileDto tmp = new FileDto();
+				tmp.setNum(rs.getInt("num"));
+				tmp.setWriter(rs.getString("writer"));
+				tmp.setTitle(rs.getString("title"));
+				tmp.setOrgFileName(rs.getString("orgFileName"));
+				tmp.setFileSize(rs.getLong("fileSize"));
+				tmp.setRegdate(rs.getString("regdate"));
+				//ArrayList 객체에 누적 시킨다.
+				list.add(tmp);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+				if (pstmt != null)
+					pstmt.close();
+				if (conn != null)
+					conn.close();
+			} catch (Exception e) {
+			}
+		}
+		return list;
+	}
+	
+	//작성자 파일 목록을 리턴해주는 메소드
+	public List<FileDto> getListW(FileDto dto){ //startRowNum,endRowNum 필드를 담아오기 위한 dto를 매개변수 설정.
+		//파일 목록을 담을 ArrayList 객체 생성
+		List<FileDto> list = new ArrayList<>();
+		//필요한 객체의 참조값을 담을 지역변수 만들기 
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try {
+			//Connection 객체의 참조값 얻어오기 
+			conn = new DbcpBean().getConn();
+			//실행할 sql 문 준비하기
+			String sql = "SELECT *"
+					+ " FROM"
+					+ " (SELECT result1.*, ROWNUM AS rnum"
+					+ "  FROM (SELECT num,writer,title,orgFileName,fileSize,regdate"
+					+ "  		FROM board_file"
+					+ " 		WHERE writer LIKE '%' || ? || '%'"
+					+ " 		ORDER BY num DESC) result1)"
+					+ " WHERE rnum BETWEEN ? AND ?";
+			pstmt = conn.prepareStatement(sql);
+			//sql 문에 ? 에 바인딩할 값이 있으면 바인딩하고
+			pstmt.setString(1, dto.getWriter());
+			pstmt.setInt(2, dto.getStartRowNum());
+			pstmt.setInt(3, dto.getEndRowNum());
 			//select 문 수행하고 결과 받아오기 
 			rs = pstmt.executeQuery();
 			//반복문 돌면서 결과 값 추출하기 
