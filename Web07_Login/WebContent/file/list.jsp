@@ -58,15 +58,17 @@
 		검색 키워드에 관련된 처리
 	*/
 	String keyword = request.getParameter("keyword");
+	String condition = request.getParameter("condition");
 	if(keyword == null){//전달된 키워드가 없다면
-		keyword=""; //빈 문자열을 넣어준다.
+		//condition, keyword의 파라미터값이 null이 찍히지 않도록 하기 위함.(파라미터로 넘어오는 값이 null로 찍힐 경우 문제가 생길 수도 있다고 함.)
+		keyword = ""; //빈 문자열을 넣어준다.
+		condition = ""; //빈 문자열을 넣어준다.
 	}
 	
 	//keyword 변수의 내용을 파라미터로 전송할 때 인코딩된 키워드로 보내기 위함.
 	//인코딩안된 내용을 파라미터로 보내면 문제가 발생할 수도 있다.
 	//인코딩된 키워드를 미리 만들어 둔다.
 	String encodedK = URLEncoder.encode(keyword);
-	String condition = request.getParameter("condition");
 	
 	//keyword와 condition 변수에 null값이 들어오는지 확인용.
 	//request.getParameter("keyword"), request.getParameter("keyword")의 값이 없는 경우 null값이 들어간다.
@@ -100,24 +102,21 @@
 			totalRow=FileDao.getInstance().getCountW(dto);
 		}
 	}else{ //검색 키워드로 list.jsp를 들어온 것이 아닌 다른 링크로 들어왔을 때 전체 목록을 얻어오기.
-		//condition, keyword의 파라미터값이 null이 찍히지 않도록 하기 위함.
-		condition = "";
-		keyword = "";
 		list=FileDao.getInstance().getList(dto);
 		totalRow=FileDao.getInstance().getCount();
 	}
 	
 	//하단에 표시할 전체 페이지의 갯수 구하기
 	int totalPageCount=
-			(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT);
+			(int)Math.ceil(totalRow/(double)PAGE_ROW_COUNT); //double 연산으로 소수점이 나오는데 이것을 올림 연산(Math.ceil)을 해서 전체 행의 개수에 맞는 하단에 표시할 전체 페이지의 개수를 구하기 위함.
 	//시작 페이지 번호
 	int startPageNum=
 		1+((pageNum-1)/PAGE_DISPLAY_COUNT)*PAGE_DISPLAY_COUNT;
 	//끝 페이지 번호
 	int endPageNum=startPageNum+PAGE_DISPLAY_COUNT-1;
-	//끝 페이지 번호가 잘못된 값이라면 
+	//끝 페이지 번호가 잘못된 값이라면(실제 하단 페이지 개수(totalPageCount)보다 끝 페이지 번호 계산된 값(endPageNum)이 많다면)
 	if(totalPageCount < endPageNum){
-		endPageNum=totalPageCount; //보정해준다. 
+		endPageNum=totalPageCount; //보정해준다.(실제 하단 페이지 개수로 화면에 출력될 수 있도록 endPageNum의 값을 totalPageCount로 넣어준다.)
 	}
 %>
 <div class="container">
