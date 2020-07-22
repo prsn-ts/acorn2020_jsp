@@ -9,27 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>/file/list.jsp</title>
-<style>
-	.page-display a{
-		text-decoration: none;
-		color: #000;
-	}
-	
-	.page-display ul li{
-		float: left; /* 가로로 쌓이게 */
-		list-style-type: none; /* disc 사라지게 */
-		margin-right: 10px; /* 오른쪽 마진 */
-	}
-	
-	.page-display ul li.active{/* li 요소 이면서 active 클래스를 가지고 있는 요소 */
-		text-decoration: underline;
-		font-weight: bold;
-	}
-	
-	.page-display ul li.active a{
-		color:red;
-	}
-</style>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css" />
 </head>
 <body>
 <%
@@ -122,8 +102,8 @@
 <div class="container">
 	<a href="private/upload_form.jsp">파일 업로드</a>
 	<h1>파일 목록입니다.</h1>
-	<table>
-		<thead>
+	<table class="table table-striped table-sm">
+		<thead class="thead-dark">
 			<tr>
 				<th>번호</th>
 				<th>작성자</th>
@@ -166,24 +146,24 @@
 		</tbody>
 	</table>
 	<div class="page-display">
-		<ul>
+		<ul class="pagination pagination-sm">
 		<%if(startPageNum != 1){ //시작 페이지 숫자가 1이 아닐경우(시작 페이지 숫자가 1일 때는 이전 페이지로 이동할 필요가 없다)%>
 			<%-- 
 				&condition=<%=condition%>&keyword=<%=encodedK%> 부분이 들어가는 이유는
 				검색 키워드로 검색된 list.jsp 페이지에서 다음 컨텐츠를 보기위해 넘길 시에 검색한 내용과 관련있는
 				내용이 계속 나와야하는데 그럴러면 condition과 keyword의 내용을 pageNum에 해당하는 페이지에 넘겨야한다.
 			--%>
-			<li><a href="list.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition%>&keyword=<%=encodedK%>">Prev</a></li>
+			<li class="page-item"><a class="page-link" href="list.jsp?pageNum=<%=startPageNum-1 %>&condition=<%=condition%>&keyword=<%=encodedK%>">Prev</a></li>
 		<%} %>
 			<%for(int i=startPageNum; i<=endPageNum; i++){ %>
 				<%if(i==pageNum){ //현재 페이지랑 페이지 넘버랑 같을 때 li요소 active 효과 추가하기%>
-					<li class="active"><a href="list.jsp?pageNum=<%=i %>&condition=<%=condition%>&keyword=<%=encodedK%>"><%=i %></a></li>
+					<li class="page-item active"><a class="page-link" href="list.jsp?pageNum=<%=i %>&condition=<%=condition%>&keyword=<%=encodedK%>"><%=i %></a></li>
 				<%}else{ %>
-					<li><a href="list.jsp?pageNum=<%=i %>&condition=<%=condition%>&keyword=<%=encodedK%>"><%=i %></a></li>
+					<li class="page-item"><a class="page-link" href="list.jsp?pageNum=<%=i %>&condition=<%=condition%>&keyword=<%=encodedK%>"><%=i %></a></li>
 				<%} %>
 			<%} %>
 		<%if(endPageNum < totalPageCount){ //전체 페이지 숫자 보다 끝 페이지 숫자가 작은 경우(다음으로 넘어갈 페이지가 존재한다는 의미)%>
-			<li><a href="list.jsp?pageNum=<%=endPageNum+1%>&condition=<%=condition%>&keyword=<%=encodedK%>">Next</a></li>
+			<li class="page-item"><a class="page-link" href="list.jsp?pageNum=<%=endPageNum+1%>&condition=<%=condition%>&keyword=<%=encodedK%>">Next</a></li>
 		<%} %>
 		</ul>
 	</div>
