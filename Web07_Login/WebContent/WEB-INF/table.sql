@@ -1,3 +1,14 @@
+CREATE TABLE board_cafe(  -- 스마트에디터를 적용한 게시판 글쓰기 및 글 목록 출력 용도의 테이블 
+	num NUMBER PRIMARY KEY,
+	writer VARCHAR2(100) NOT NULL,
+	title VARCHAR2(100) NOT NULL,
+	content CLOB,
+	viewCount NUMBER, -- 조회수
+	regdate DATE
+);
+
+CREATE SEQUENCE board_cafe_seq;
+
 CREATE TABLE board_gallery(
 	num NUMBER PRIMARY KEY,
 	writer VARCHAR2(100),
