@@ -108,10 +108,11 @@ public class GalleryDao {
 					+ "		(SELECT num,writer,caption,imagePath,regdate"
 					+ " 		FROM board_gallery"
 					+ " 		ORDER BY num DESC) result1)"
-					+ " WHERE num=?";
+					+ " WHERE rnum BETWEEN ? AND ?";
 			pstmt = conn.prepareStatement(sql);
 			//sql 문에 ? 에 바인딩할 값이 있으면 바인딩하고 
-
+			pstmt.setInt(1, dto.getStartRowNum());
+			pstmt.setInt(2, dto.getEndRowNum());
 			//select 문 수행하고 결과 받아오기 
 			rs = pstmt.executeQuery();
 			//반복문 돌면서 결과 값 추출하기 

@@ -43,7 +43,6 @@
 	GalleryDto dto=new GalleryDto();
 	dto.setStartRowNum(startRowNum);
 	dto.setEndRowNum(endRowNum);
-	
 	//1. DB 에서 글 목록을 얻어온다.
 	List<GalleryDto> list=GalleryDao.getInstance().getList(dto);
 	//2. 글 목록을 응답한다.
@@ -69,9 +68,15 @@
 <script>
 	//페이지가 처음 로딩될때 1page 를 보여준다고 가정
 	var currentPage = 1;
+	//전체 페이지 수를 javascript 변수에 담아준다.
+	var totalPageCount = <%=totalPageCount%>;
+	//ajax 요청이 응답 되었는지 여부(밑에 scrollTop+windowHeight + 10이 구문으로 인해 요청이 두번 들어갈 수도 있기 때문에)
+	
 	//웹브라우저에 scroll 이벤트가 일어 났을 때 실행할 함수 등록
 	$(window).on("scroll", function(){
-		console.log("scroll!");
+		if(currentPage == totalPageCount){//만일 마지막 페이지 이면
+			return; //함수를 여기서 종료한다.
+		}
 		//위쪽으로 스크롤된 길이 구하기
 		var scrollTop = $(window).scrollTop();
 		//window 의 높이
@@ -79,9 +84,11 @@
 		//document(문서)의 높이
 		var documentHeight = $(document).height();
 		//바닥까지 스크롤 되었는지 여부
-		 //바닥으로 스크롤을 다 내렸는지 인식을 못하는 경우가 있어서 +10의 여유를 줘서 documentHeight보다 값이 크게해 인식되도록 처리.
+		//바닥으로 스크롤을 다 내렸는지 인식을 못하는 경우가 있어서 +10의 여유를 줘서 documentHeight보다 값이 크게해 인식되도록 처리.
 		var isBottom = scrollTop+windowHeight + 10 >= documentHeight;
 		if(isBottom){//만일 바닥까지 스크롤 했다면...
+			//로딩중 이미지 띄우기
+			$(".loader").show();
 			currentPage++; //페이지를 1 증가 시키고
 			//해당 페이지의 내용을 ajax 요청을 해서 받아온다.
 			$.ajax({
@@ -89,8 +96,10 @@
 				method:"get",
 				data:{pageNum:currentPage},
 				success:function(data){
-					//data 가 html 마크업 형태의 문자열로 넘어오면 html 형식으로 해석할 수 있도록 처리(html() 함수 이용)
-					$(".container").html(data);
+					//data 가 html 마크업 형태의 문자열로 넘어오면 밑에 추가될 수 있도록 처리(append() 함수 이용)
+					$(".container").append(data);
+					//마크업 출력이 끝난 후 로딩중 이미지를 숨긴다.
+					$(".loader").hide();
 				}
 			});
 		}
