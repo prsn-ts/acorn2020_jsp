@@ -66,5 +66,6 @@
 		<li>${tmp }</li>
 	</c:forTokens>
 </ul>
+<a href="jstl_test4.jsp">다음 예제</a>
 </body>
 </html>

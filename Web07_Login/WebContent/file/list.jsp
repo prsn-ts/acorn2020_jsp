@@ -4,6 +4,8 @@
 <%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -98,6 +100,20 @@
 	if(totalPageCount < endPageNum){
 		endPageNum=totalPageCount; //보정해준다.(실제 하단 페이지 개수로 화면에 출력될 수 있도록 endPageNum의 값을 totalPageCount로 넣어준다.)
 	}
+	
+	//EL 에서 사용할 값을 미리 request 에 담아두기
+	request.setAttribute("list", list);
+	
+	//EL 에서 사용할 값을 미리 request 에 담아두기
+	request.setAttribute("list", list);
+	request.setAttribute("startPageNum", startPageNum);
+	request.setAttribute("endPageNum", endPageNum);
+	request.setAttribute("pageNum", pageNum);
+	request.setAttribute("totalPageCount", totalPageCount);
+	request.setAttribute("condition", condition);
+	request.setAttribute("keyword", keyword);
+	request.setAttribute("encodedK", encodedK);
+	
 %>
 <div class="container">
 	<a href="private/upload_form.jsp">파일 업로드</a>
@@ -115,6 +131,23 @@
 			</tr>
 		</thead>
 		<tbody>
+		<%-- JSTL 과 EL 문법으로 대체
+			<c:forEach var="tmp" items="${list }">
+				<tr>
+					<td>${tmp.num }</td>
+					<td>${tmp.writer }</td>
+					<td>${tmp.title }</td>
+					<td><a href="download.jsp?num=${tmp.num }">${tmp.orgFileName }</a></td>
+					<td><fmt:formatNumber value="${tmp.fileSize }" pattern="#,###"/> byte</td>
+					<td>${tmp.regdate }</td>
+					<td>
+						<c:if test="${tmp.writer eq id }">
+							<a href="private/delete.jsp?num=${tmp.num }">삭제</a>
+						</c:if>
+					</td>
+				</tr>
+			</c:forEach>
+		--%>
 		<%for(FileDto tmp: list){ %>
 			<tr>
 				<td><%=tmp.getNum() %></td>
@@ -126,7 +159,6 @@
 					?num=<%=tmp.getNum() %> 이 부분을 넣어줘야한다.
 				--%>
 				<td><a href="download.jsp?num=<%=tmp.getNum() %>"><%=tmp.getOrgFileName() %></a></td>
-				<td><%=tmp.getSaveFileName() %></td>
 				<td><%=tmp.getFileSize() %></td>
 				<td><%=tmp.getRegdate() %></td>
 				<%-- 파일을 삭제하기 위한 삭제 링크 설정
@@ -147,6 +179,24 @@
 	</table>
 	<div class="page-display">
 		<ul class="pagination pagination-sm">
+		<%-- JSTL 과 EL 문법으로 대체
+			<c:if test="${startPageNum ne 1 }">
+				<li class="page-item"><a class="page-link" href="list.jsp?pageNum=${startPageNum-1 }&condition=${condition }&keyword=${encodedK }">Prev</a></li>
+			</c:if>
+			<c:forEach var="i" begin="${startPageNum }" end="${endPageNum }" step="1">
+				<c:choose>
+					<c:when test="${i eq pageNum }">
+						<li class="page-item active"><a class="page-link" href="list.jsp?pageNum=${i }&condition=${condition }&keyword=${endcodedK }">${i }</a></li>
+					</c:when>
+					<c:otherwise>
+						<li class="page-item"><a class="page-link" href="list.jsp?pageNum=${i }&condition=${condition }&keyword=${endcodedK }">${i }</a></li>
+					</c:otherwise>
+				</c:choose>
+			</c:forEach>
+			<c:if test="${endPageNum lt totalPageCount }">
+				<li class="page-item"><a class="page-link" href="list.jsp?pageNum=${endPageNum+1 }&condition=${condition }&keyword=${endcodedK }">Next</a></li>
+			</c:if>
+		--%>
 		<%if(startPageNum != 1){ //시작 페이지 숫자가 1이 아닐경우(시작 페이지 숫자가 1일 때는 이전 페이지로 이동할 필요가 없다)%>
 			<%-- 
 				&condition=<%=condition%>&keyword=<%=encodedK%> 부분이 들어가는 이유는
@@ -167,6 +217,19 @@
 		<%} %>
 		</ul>
 	</div>
+	<%-- JSTL 과 EL 문법으로 대체
+		<hr style="clear:left;"/>
+		<form action="list.jsp" method="get">
+			<label for="condition">검색조건</label>
+			<select name="condition" id="condition">
+				<option value="title_filename" <c:if test="${condition eq 'title_filename' }">selected</c:if>>제목+파일명</option>
+				<option value="title" <c:if test="${condition eq 'title' }">selected</c:if>>제목</option>
+				<option value="writer" <c:if test="${condition eq 'writer' }">selected</c:if>>작성자</option>
+			</select>
+			<input value="${keyword }" type="text" name="keyword" placeholder="검색어..."/>
+			<button type="submit">검색</button>
+		</form>
+	 --%>
 	<hr style="clear:left;"/>
 	<form action="list.jsp" method="get">
 		<label for="condition">검색조건</label>

@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <%
 	//textarea 에 입력한 정보를 읽어온다. 개행기호(\n) 포함되어 있을 수 있다.
 	String content = request.getParameter("content");

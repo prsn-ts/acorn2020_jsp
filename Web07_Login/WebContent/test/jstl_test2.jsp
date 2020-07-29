@@ -65,5 +65,6 @@
 		<li data-index="${status.last }">${tmp } <strong>${status.last }</strong></li>
 	</c:forEach>
 </ul>
+<a href="jstl_test3.jsp">다음 예제</a>
 </body>
 </html>

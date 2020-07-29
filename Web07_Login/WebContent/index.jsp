@@ -40,7 +40,7 @@
 		<li><a href="test/popup2.jsp">팝업 test2</a></li>
 		<li><a href="test/el_test.jsp">EL test1</a></li>
 		<li><a href="test/el_test2.jsp">EL test2</a></li>
-		<li><a href="test/jstl_test.jsp"></a></li>
+		<li><a href="test/jstl_test.jsp">jstl test</a></li>
 	</ul>
 </div>
 </body>
