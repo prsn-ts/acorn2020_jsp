@@ -41,6 +41,11 @@
 		<li><a href="test/el_test.jsp">EL test1</a></li>
 		<li><a href="test/el_test2.jsp">EL test2</a></li>
 		<li><a href="test/jstl_test.jsp">jstl test</a></li>
+		<%-- 
+			문자열 형식의 검증 및 복잡한 문자열중에서 원하는 문자열을 추출하는 등의 일을 하기위해서
+			이러한 일을 대신해주는 프로그램이 있다 그것이 regular expression(정규표현식) 이라고 한다. 
+		--%>
+		<li><a href="test/regular_ex.jsp">정규표현식 테스트1</a></li>
 	</ul>
 </div>
 </body>
