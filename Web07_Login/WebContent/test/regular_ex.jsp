@@ -11,6 +11,7 @@
 <input type="text" id="id" placeholder="아이디 입력..." />
 <button id="checkBtn">가입</button>
 <p>영문자 소문자로 시작하고 5~10글자 이내, 특수문자를 하나이상 입력 하세요</p>
+<a href="regular_ex2.jsp">다음예제</a>
 <script src="${pageContext.request.contextPath}/js/jquery-3.5.1.js"></script>
 <script>
 
@@ -21,7 +22,7 @@
 	// 그래서 /^.{5,10}$/ 이렇게 시작(^)과 끝($)을 명시해야한다.(매칭되는게 존재할 뿐만 아니라 그것외에 불필요한 문자가 들어갈 수 있기 때문에 시작과 끝을 명시해서 검사해야할 문자만 검사해 true, false를 반환해서 판단한다.)
 	var reg2=/^.{5,10}$/;
 	////특수문자가 포함되어 있는지 여부를 검증할 수 있는 정규 표현식 객체
-	var reg3=/[a-zA-Z0-9]/;
+	var reg3=/[^a-zA-Z0-9]/;
 	//영문자 소문자 시작 + 최소 5글자 최대 10글자 인지 여부를 검증할 수 있는 정규 표현식 객체
 	var reg4 = /^[a-z].{4,9}$/; //[a-z]에서 한글자가 포함되기 때문에 최소 4글자에서 최대 9글자까지만 들어가도록 .{4,9} 이렇게 처리.
 
@@ -34,10 +35,22 @@
 		if(result1){
 			alert("영문자 소문자로 시작 했군요!");
 		}
-		
+		//최소 5글자 ~ 최대 10글자를 검증한다.
 		var result2 = reg2.test(str);
 		if(result2){
 			alert("최소 5글자~최대10글자 이군요!");
+		}
+		//특수 문자가 포함되어 있는지를 검증한다.
+		var result3 = reg3.test(str);
+		if(result3){
+			alert("특수문자가 포함되어 있군요!");
+		}
+		
+		if(reg4.test(str)==false){
+			alert("영문자 소문자로 시작을 하고 최소 5글자 ~ 최대 10글자 이내로 작성해 주세요!");
+		}
+		if(!reg4.test(str)){
+			alert("영문자 소문자로 시작을 하고 최소 5글자 ~ 최대 10글자 이내로 작성해 주세요!");
 		}
 	});
 </script>
