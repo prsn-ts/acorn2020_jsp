@@ -20,7 +20,7 @@ public class FortuneServlet extends HttpServlet {
 		req.setAttribute("fortuneToday", fortuneToday); //request 영역에 담은 것은 forward 이동을 해도 사라지지않는다.(응답한 것이 아니기 때문임, 응답하는 것은 fortune.jsp로 위임한다)
 		//3. view 페이지(jsp 페이지) 로 forward(응답을 위임하는 것을 말함) 이동해서 응답하기
 		RequestDispatcher rd =
-				req.getRequestDispatcher("/views/fortune.jsp");
+				req.getRequestDispatcher("/WEB-INF/views/fortune.jsp");
 		rd.forward(req, resp);
 	}
 }
