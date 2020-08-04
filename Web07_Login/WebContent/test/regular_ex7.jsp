@@ -36,7 +36,7 @@
 		</div>
 		<button class="btn btn-primary" type="submit">가입</button>
 	</form>
-	<a href="regular_ex7.jsp">다음예제</a>
+	<a href="regular_ex8.jsp">다음예제</a>
 </div>
 <script src="${pageContext.request.contextPath }/js/jquery-3.5.1.js"></script>
 <script>
