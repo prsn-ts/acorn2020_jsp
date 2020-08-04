@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>/test/regular_ex6.jsp</title>
+<title>/test/regular_ex7.jsp</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/bootstrap.css" />
 <style>
 	.error-feedback{
@@ -55,17 +55,17 @@
 		//입력한 아이디를 읽어와서 검증한다.
 		inputId=$("#id").val();
 		isIdValid=reg_id.test(inputId);
+		
+		//is-valid, is-invalid 클래스를 일단 제거 후
+		$(this).removeClass("is-valid is-invalid");
+		
 		//아이디가 유효하면 에러 메세지를 숨긴다.
 		if(isIdValid){//아이디가 유효하다면
-			//is-invalid 클래스를 제거한다.
-			$(this).removeClass("is-invalid");
 			//is-valid 클래스를 추가한다.
 			$(this).addClass("is-valid");
 		}
 		//아이디가 유효하지 않으면 에러 메세지를 보여준다.
 		else{
-			//is-valid 클래스를 제거한다.
-			$(this).removeClass("is-valid");
 			//is-invalid 클래스를 추가한다.
 			$(this).addClass("is-invalid");
 		}
@@ -75,17 +75,17 @@
 		//입력한 전화 번호를 읽어와서 검증한다.
 		inputPhone=$("#phone").val();
 		isPhoneValid = reg_phone.test(inputPhone);
+		
+		//is-valid, is-invalid 클래스를 일단 제거 후
+		$(this).removeClass("is-valid is-invalid");
+		
 		//휴대폰 번호가 유효하면 에러 메세지를 숨긴다.
 		if(isPhoneValid){
-			//is-invalid 클래스를 제거한다.
-			$(this).removeClass("is-invalid");
 			//is-valid 클래스를 추가한다.
 			$(this).addClass("is-valid");
 		}
 		//휴대폰 번호가 유효하지 않으면 에러 메세지를 보여준다.
 		else{
-			//is-valid 클래스를 제거한다.
-			$(this).removeClass("is-valid");
 			//is-invalid 클래스를 추가한다.
 			$(this).addClass("is-invalid");
 		}
