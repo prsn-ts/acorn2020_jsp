@@ -76,7 +76,7 @@ public class MemberDaoImpl implements MemberDao {
 		 *  - selectList() 메소드는 List type 을 리턴하고 List 의 generic type이 resultType 이 된다.
 		 */
 		List<MemberDto> list = session.selectList("member.getList");
-		return null;
+		return list;
 	}
 	
 }
