@@ -48,7 +48,7 @@
 		Dao 가 의존하는 객체 
 	-->
 	<!-- 
-		DB 연동을 위한 핵심 의존 객체는  SqlSessionTemplate
+		MyBatis로 DB 연동을 위한 핵심 의존 객체는  SqlSessionTemplate
 		필요한 핵심 객체는 직접 생성하지 않고(유지보수를 위해) Spring에서 관리할 수 있도록 하고
 		쓰려고 할 때는 Spring에서 빌려서 쓴다.
 		
